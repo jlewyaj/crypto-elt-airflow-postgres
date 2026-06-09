@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # Service 1: The PostgreSQL Database
+  postgres_warehouse:
+    image: postgres:15
+    container_name: local_postgres
+    environment:
+      POSTGRES_USER: de_user
+      POSTGRES_PASSWORD: de_password
+      POSTGRES_DB: local_dw
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - de_network
+
+  # Service 2: pgAdmin (Visual interface to look at our database)
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: local_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@de.com
+      PGADMIN_DEFAULT_PASSWORD: adminpassword
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres_warehouse
+    networks:
+      - de_network
+  
+  # Service 3: Streamlined Apache Airflow (Standalone Mode)
+  airflow:
+    image: apache/airflow:2.7.1-python3.10
+    container_name: local_airflow
+    environment:
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
+    user: "${AIRFLOW_UID:-50000}:0"
+    volumes:
+      - ./dags:/opt/airflow/dags
+    ports:
+      - "8081:8080"
+    command: standalone
+    depends_on:
+      - postgres_warehouse
+    networks:
+      - de_network
+
+volumes:
+  pgdata:
+
+networks:
+  de_network:
+    driver: bridge
