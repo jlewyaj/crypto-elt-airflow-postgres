@@ -7,7 +7,7 @@ An end-to-end local data engineering pipeline that automatically extracts live c
 The system architecture is fully containerized and uses the following automated data flow:
 
 ```mermaid
-graph LR
+graph TB
     subgraph Data Source
         A[CoinGecko API]
     end
@@ -27,9 +27,12 @@ graph LR
     B -->|Pandas DataFrame / Upsert| D
     D -->|SQL Query Validation| E
 
-    style A fill:#f9f,stroke:#333,stroke-width:1px
-    style C fill:#bbf,stroke:#333,stroke-width:1px
-    style D fill:#bfb,stroke:#333,stroke-width:1px
+    %% Enforce high contrast text colors
+    style A fill:#f9f,stroke:#333,stroke-width:1px,color:#000
+    style B color:#000
+    style C fill:#bbf,stroke:#333,stroke-width:1px,color:#000
+    style D fill:#bfb,stroke:#333,stroke-width:1px,color:#000
+    style E color:#000
 ```
 
 ## 🛠️ Tech Stack & Core Concepts
