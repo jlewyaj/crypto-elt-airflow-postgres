@@ -12,7 +12,7 @@ conn_params = {
     "host": "postgres_warehouse",
     "database": "local_dw",
     "user": "de_user",
-    "password": "de_password",
+    "password": "adminpassword",
     "port": "5432"
 }
 

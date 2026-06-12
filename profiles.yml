@@ -1,0 +1,12 @@
+crypto_transformations:
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      port: 5432
+      user: de_user
+      password: adminpassword
+      dbname: "local_dw"   # Wrapped in quotes to strictly enforce string type
+      schema: public
+      threads: 1
+  target: dev

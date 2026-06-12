@@ -7,7 +7,7 @@ services:
     container_name: local_postgres
     environment:
       POSTGRES_USER: de_user
-      POSTGRES_PASSWORD: de_password
+      POSTGRES_PASSWORD: adminpassword
       POSTGRES_DB: local_dw
     ports:
       - "5432:5432"
@@ -22,7 +22,7 @@ services:
     container_name: local_pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@de.com
-      PGADMIN_DEFAULT_PASSWORD: adminpassword
+      PGADMIN_DEFAULT_PASSWORD: admin
     ports:
       - "8080:80"
     depends_on:
@@ -47,6 +47,16 @@ services:
       - postgres_warehouse
     networks:
       - de_network
+  
+  # Service 4: Data Build Tool (Transform)
+  dbt:
+    image: ghcr.io/dbt-labs/dbt-postgres:1.7.0
+    volumes:
+      - ./crypto_transformations:/usr/app # Points exactly to where dbt_project.yml lives
+      - ./profiles.yml:/root/.dbt/profiles.yml
+    network_mode: service:postgres_warehouse
+    profiles:
+      - dbt-only
 
 volumes:
   pgdata:

@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: public_source
+    database: local_dw
+    schema: public
+    tables:
+      - name: market_metrics_staging
